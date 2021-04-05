@@ -3,3 +3,97 @@
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
   }
+
+body {
+    max-width: 1200px;
+    padding: 25px;
+    margin: auto;
+}
+
+button {
+    background-color: darkslateblue;
+    color: white;
+    font-size: 1.25em;
+    text-align: center;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: mediumvioletred;
+}
+
+header {
+    clear: both;
+}
+
+.view-high-scores {
+    float: left;
+}
+
+.timer {
+    float: right;
+    font-size: 1.25em;
+    padding: 10px;
+    margin: 5px;
+}
+
+main {
+    text-align: center;
+    padding: 200px;
+}
+
+.intro-container, 
+.end-container,
+.high-score-container {
+    text-align: center;
+    
+}
+
+.intro-container p,
+.end-container p,
+label {
+    font-size: 1.25em;
+    padding-bottom: 25px;
+}
+
+.intro-container h1,
+.end-container h1, 
+.high-score-container h1 {
+    font-size: 2em;
+    padding: 25px 0 25px 0;
+}
+
+.quiz-container {
+    text-align: left;
+}
+
+.questions {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 25px 0 25px 0;
+}
+
+.results {
+    font-size: 1.25em;
+    font-weight: bold;
+    font-style: italic;
+    color: mediumvioletred;
+    padding: 10px 0 10px 0;
+}
+
+input {
+    max-width: 150px;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    background-color: lavender;
+}
+
+.highest-score {
+    text-align: left;
+    min-width: 100px;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    background-color: lavender;
+}
