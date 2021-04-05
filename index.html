@@ -10,34 +10,34 @@
   </head>
 
   <body>
-    <header>
+    <header class = "show">
         <button class = "view-high-scores">View High Scores</button>
-        <div class = timer>Time: <span class = "countdown">75</span> s</div>
+        <div class = timer>Time: <span class = "countdown">0</span> s</div>
     </header>
 
     <main>
-        <div class = "intro-container">
+        <div id = "intro-container" class = "show">
             <h1>Coding Quiz Challenge</h1>
             <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
             <button class = "start-button">Start Quiz</button>
         </div>
 
-        <div class = "quiz-container">
+        <div id = "quiz-container" class = "hide">
             <div class = "questions">
                 Commonly used data types DO NOT include:
             </div>
-            <div class = "answers">
+            <div class = "options">
                 <ol>
-                    <li><button class = "answer-1">1. strings</button></li>
-                    <li><button class = "answer-2">2. booleans</button></li>
-                    <li><button class = "answer-3">3. alerts</button></li>
-                    <li><button class = "answer-4">4. numbers</button></li>
+                    <li><button class = "option-1">strings</button></li>
+                    <li><button class = "option-2">booleans</button></li>
+                    <li><button class = "option-3">alerts</button></li>
+                    <li><button class = "option-4">numbers</button></li>
                 </ol>    
             </div>
             <div class = "results">Correct!/Incorrect!</div>
         </div>
 
-        <div class = "end-container">
+        <div id = "end-container" class = "hide">
             <h1>All done!</h1>
             <p>Your final score is <span class = "final-score">0</span>.</p>
             <form>
@@ -47,7 +47,7 @@
             </form>
         </div>
 
-        <div class = "high-score-container">
+        <div id = "high-score-container" class = "hide">
             <h1>High Scores</h1>
             <div class = "highest-score">0</div>
             <button class = "back-button">Go Back</button>

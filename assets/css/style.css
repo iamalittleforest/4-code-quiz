@@ -44,28 +44,36 @@ main {
     padding: 200px;
 }
 
-.intro-container, 
-.end-container,
-.high-score-container {
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+#intro-container, 
+#end-container,
+#high-score-container {
     text-align: center;
     
 }
 
-.intro-container p,
-.end-container p,
+#intro-container p,
+#end-container p,
 label {
     font-size: 1.25em;
     padding-bottom: 25px;
 }
 
-.intro-container h1,
-.end-container h1, 
-.high-score-container h1 {
+#intro-container h1,
+#end-container h1, 
+#high-score-container h1 {
     font-size: 2em;
     padding: 25px 0 25px 0;
 }
 
-.quiz-container {
+#quiz-container {
     text-align: left;
 }
 
