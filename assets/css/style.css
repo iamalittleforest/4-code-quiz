@@ -83,7 +83,7 @@ label {
     padding: 25px 0 25px 0;
 }
 
-.results {
+#message {
     font-size: 1.25em;
     font-weight: bold;
     font-style: italic;

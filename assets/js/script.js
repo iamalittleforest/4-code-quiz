@@ -12,18 +12,14 @@ var backButton = document.querySelector(".back-button"); // signals return to in
 var clearButton = document.querySelector(".clear-button"); // clears local storage
 var viewScores = document.querySelector(".view-high-scores"); // signals return to show high scores
 
-// variables that change
-var countdownTimer = document.querySelector(".countdown"); // timer countdown
+// quiz variables
 var question = document.querySelector(".questions");
 var optionOne = document.querySelector(".option-1");
 var optionTwo = document.querySelector(".option-2");
 var optionThree = document.querySelector(".option-3");
 var optionFour = document.querySelector(".option-4");
-var results = document.querySelector(".results"); // either "correct" or "incorrect" based on answer to question
-var initials = document.querySelector(".initials"); // holds value of initials
-var finalScore = document.querySelector(".final-score") // shares the same value as time when game ends
-var highestScore = document.querySelector(".highest-score"); // holds value of highest score
-
+var messageEl = document.querySelector("#message"); // either "correct" or "incorrect" based on answer to question
+var correct;
 var quiz = [
     {
         question: "Commonly used data types DO NOT include:",
@@ -52,9 +48,19 @@ var quiz = [
     }
 ];
 
-var timerCount = 75;
-var isComplete = false;
+// timer variables
+var timeLeft = 76;
+var countdownTimer = document.querySelector(".countdown"); // timer countdown
 
+
+// score variables
+var initials = document.querySelector(".initials"); // holds value of initials
+var userScore = document.querySelector(".user-score") // shares the same value as time when game ends
+var highestScore = document.querySelector(".highest-score"); // holds value of highest score
+var allScores = {
+    initials: initials.value.trim(),
+    userScore: userScore.value.trim()
+};
 
 // init function
 
@@ -68,13 +74,15 @@ var isComplete = false;
 
 // timer
 function startTimer() {
-    countdownTimer = setInterval(function () {
+    var timeInterval = setInterval(function () {
         // timer counting down
-        timerCount--;
-        countdownTimer.textContent = timerCount;
+        timeLeft--;
+        countdownTimer.textContent = timeLeft;
 
         // when timer is zero, quiz ends as incomplete
-        if (timerCount === 0) {
+        if (timeLeft === 0) {
+            clearInterval(timeInterval);
+            countdownTimer.textContent = "0";
             endQuiz();
         }
     }, 1000);
@@ -83,51 +91,68 @@ function startTimer() {
 // quiz
 function startQuiz() {
     // hide intro-container
-
+    introContainer.setAttribute("class", "hide");
     // show quiz-container
-
-
-
+    quizContainer.setAttribute("class", "show");
 }
+
+function endQuiz() {
+    // hide quiz-container
+    quizContainer.setAttribute("class", "hide");
+    // show end-container
+    endContainer.setAttribute("class", "show");
+    // show score
+    userScore.textContent = timeLeft;
+}   
+
+
+
+
+// questions
+function renderQuestion() {
+    var 
+}
+
+
+
+// answers
+function renderAnswer () {
+
     // answering question changes to next question
     answerOne.addEventListener("click", userResponse);
     answerTwo.addEventListener("click", userResponse);
     answerThree.addEventListener("click", userResponse);
     answerFour.addEventListener("click", userResponse);
 
-    function userResponse () {
+    // if answer is correct, "correct" appears at the bottom of the question
+    // if answer is correct, no change to timer
+        messageEl.setAttribute("class", "show");
+        messageEl.textContent = "Correct!";
 
-    }
-        // if answer is correct, "correct" appears at the bottom of the question
-        // if answer is correct, no change to timer
-        function correctAnswer() {
+    // if answer is incorrect, "wrong" appears at the bottom of the question
+    // if answer is incorrect, time is subtracted from timer
+        messageEl.setAttribute("class", "show");
+        messageEl.textContent = "Incorrect!"
+        timeLeft -= 10;
+}
 
-        }
-
-        // if answer is incorrect, "wrong" appears at the bottom of the question
-        // if answer is incorrect, time is subtracted from timer
-        function incorrectAnswer() {
-
-        }
 
     // when all questions are answered, game is over
 
-function endQuiz() {
-    // hide quiz-container
 
-    // show end-container
-
-    // show final score
-}   
 
 
 // score
 function saveScore() {
-    // score equal to timer
-
+    // checks if input is empty
+    if (initials !== "") {
+        
+    }
     // enter user intials
-
+    initials = initials.value.trim();
     // save initials and score to local storage
+    localStorage.setItem("initials", JSON.stringify(initials));
+    localStorage.setItem("userScore", timeLeft);
 }
 
 
@@ -135,13 +160,13 @@ function saveScore() {
 
     // high score is retrieved from local storage and displayed
     function getHighScore() {
-
+        var highScores = JSON.parse(localStorage.getItem("initials");
+        localStorage.getItem("userScore", timeLeft);
     }
     
     // clear score button clears high score from local storage (event listener)
     function clearHighScore() {
-        highestScore = 0;
-        setHighScore()
+        localStorage.clear();
     }
 
     clearButton.addEventListener("click", clearHighScore);

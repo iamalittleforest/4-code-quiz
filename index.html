@@ -12,7 +12,7 @@
   <body>
     <header class = "show">
         <button class = "view-high-scores">View High Scores</button>
-        <div class = timer>Time: <span class = "countdown">0</span> s</div>
+        <div class = timer>Time: <span id = "countdown">0</span> s</div>
     </header>
 
     <main>
@@ -34,12 +34,12 @@
                     <li><button class = "option-4">numbers</button></li>
                 </ol>    
             </div>
-            <div class = "results">Correct!/Incorrect!</div>
+            <div id = "message" class = "hide">Correct!/Incorrect!</div>
         </div>
 
         <div id = "end-container" class = "hide">
             <h1>All done!</h1>
-            <p>Your final score is <span class = "final-score">0</span>.</p>
+            <p>Your final score is <span class = "user-score">0</span>.</p>
             <form>
                 <label for = "initials">Enter initials:</label>
                 <input type = "text" name = "initials" id = "initials" />
