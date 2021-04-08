@@ -52,21 +52,21 @@ main {
     display: none;
 }
 
-#intro-container, 
+#start-container, 
 #end-container,
 #high-score-container {
     text-align: center;
     
 }
 
-#intro-container p,
+#start-container p,
 #end-container p,
 label {
     font-size: 1.25em;
     padding-bottom: 25px;
 }
 
-#intro-container h1,
+#start-container h1,
 #end-container h1, 
 #high-score-container h1 {
     font-size: 2em;
@@ -98,7 +98,7 @@ input {
     background-color: lavender;
 }
 
-.highest-score {
+.score-list {
     text-align: left;
     min-width: 100px;
     padding: 10px;

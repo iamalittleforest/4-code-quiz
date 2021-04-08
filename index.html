@@ -16,7 +16,7 @@
     </header>
 
     <main>
-        <div id = "intro-container" class = "show">
+        <div id = "start-container" class = "show">
             <h1>Coding Quiz Challenge</h1>
             <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
             <button class = "start-button">Start Quiz</button>
@@ -39,7 +39,7 @@
 
         <div id = "end-container" class = "hide">
             <h1>All done!</h1>
-            <p>Your final score is <span class = "user-score">0</span>.</p>
+            <p>Your final score is <span id = "user-score">0</span>.</p>
             <form>
                 <label for = "initials">Enter initials:</label>
                 <input type = "text" name = "initials" id = "initials" />
@@ -49,7 +49,7 @@
 
         <div id = "high-score-container" class = "hide">
             <h1>High Scores</h1>
-            <div class = "highest-score">0</div>
+            <li class = "score-list"></li>
             <button class = "back-button">Go Back</button>
             <button class = "clear-button">Clear High Scores</button>
 
