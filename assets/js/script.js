@@ -15,43 +15,64 @@ var viewScores = document.querySelector(".view-high-scores"); // signals return 
 // init function
 
 
-// start
-    // start button starts timer countdown (event listener)
-    startButton.addEventListener("click", startTimer)
-    // start button starts quiz (event listener)
-    startButton.addEventListener("click", startQuiz)
-
-    // timer
-    var countdownTimer = document.querySelector("#countdown"); // timer countdown
-    var timeLeft = 6;
-
-    function startTimer() {
-        var timeInterval = setInterval(function () {
-            // timer counting down 
-            timeLeft--;
-            countdownTimer.textContent = timeLeft;
-            
-            // when timer is zero, quiz ends as incomplete
-            if (timeLeft === 0) {
-                clearInterval(timeInterval);
-                countdownTimer.textContent = "0";
-                endQuiz();
-            }
-        }, 1000);
-    }
-
-// high score button shows high scores (event listener)
-viewScores.addEventListener("click", renderScores);
-
-
 // quiz
-var question = document.querySelector(".questions");
-var optionOne = document.querySelector(".option-1");
-var optionTwo = document.querySelector(".option-2");
-var optionThree = document.querySelector(".option-3");
-var optionFour = document.querySelector(".option-4");
-var messageEl = document.querySelector("#message"); // either "correct" or "incorrect" based on answer to question
-var correct;
+startButton.addEventListener("click", startQuiz)
+
+function startQuiz() {
+    
+    // hide & show applicable containers
+    headerContainer.setAttribute("class", "show");
+    startContainer.setAttribute("class", "hide");
+    quizContainer.setAttribute("class", "show");
+    endContainer.setAttribute("class", "hide");
+    highScoreContainer.setAttribute("class", "hide");
+    
+    // start timer
+    startTimer();
+    // render questions
+    renderQuestion();
+}
+
+function endQuiz() {
+    
+    // hide & show applicable containers
+    headerContainer.setAttribute("class", "show");
+    startContainer.setAttribute("class", "hide");
+    quizContainer.setAttribute("class", "hide");
+    endContainer.setAttribute("class", "show");
+    highScoreContainer.setAttribute("class", "hide");
+    
+    // show score
+    userScore.textContent = timeLeft;
+    console.log(userScore.textContent);
+}   
+
+// timer
+var countdownTimer = document.querySelector("#countdown"); // timer countdown
+var timeLeft = 26;
+
+function startTimer() {
+    var timeInterval = setInterval(function () {
+        // timer counts down and renders to page
+        timeLeft--;
+        countdownTimer.textContent = timeLeft;
+        
+        // when timer is zero, quiz ends
+        if (timeLeft === 0) {
+            clearInterval(timeInterval);
+            endQuiz();
+        }
+    }, 1000);
+}
+
+
+// questions
+var questionEl = document.querySelector(".questions");
+var optionOneEl = document.querySelector(".option-1");
+var optionTwoEl = document.querySelector(".option-2");
+var optionThreeEl = document.querySelector(".option-3");
+var optionFourEl = document.querySelector(".option-4");
+var quizIndex = 0;
 var quiz = [
     {
         question: "Commonly used data types DO NOT include:",
@@ -80,134 +101,133 @@ var quiz = [
     }
 ];
 
-function startQuiz() {
-    // hide start-container
-    startContainer.setAttribute("class", "hide");
-    // show quiz-container
-    quizContainer.setAttribute("class", "show");
+function renderQuestion() {
+    var currentQuestion = quiz[quizIndex];
+    questionEl.innerHTML = currentQuestion.question;
+    optionOneEl.innerHTML = currentQuestion.options[0];
+    optionTwoEl.innerHTML = currentQuestion.options[1];
+    optionThreeEl.innerHTML = currentQuestion.options[2];
+    optionFourEl.innerHTML = currentQuestion.options[3];
 }
 
-function endQuiz() {
-    // hide quiz-container
-    quizContainer.setAttribute("class", "hide");
-    // show end-container
-    endContainer.setAttribute("class", "show");
-    // show score
-    userScore.textContent = timeLeft;
-}   
 
+// answers
+optionOneEl.addEventListener("click", renderAnswer);
+optionTwoEl.addEventListener("click", renderAnswer);
+optionThreeEl.addEventListener("click", renderAnswer);
+optionFourEl.addEventListener("click", renderAnswer);
 
-// // questions
-// function renderQuestion() {
-//     var 
-// }
+var messageEl = document.querySelector("#message"); // either "correct" or "incorrect" based on answer to question
 
-
-
-// // answers
-// function renderAnswer () {
-
-//     // answering question changes to next question
-//     answerOne.addEventListener("click", userResponse);
-//     answerTwo.addEventListener("click", userResponse);
-//     answerThree.addEventListener("click", userResponse);
-//     answerFour.addEventListener("click", userResponse);
-
-//     // if answer is correct, "correct" appears at the bottom of the question
-//     // if answer is correct, no change to timer
-//         messageEl.setAttribute("class", "show");
-//         messageEl.textContent = "Correct!";
-
-//     // if answer is incorrect, "wrong" appears at the bottom of the question
-//     // if answer is incorrect, time is subtracted from timer
-//         messageEl.setAttribute("class", "show");
-//         messageEl.textContent = "Incorrect!"
-//         timeLeft -= 10;
-
-//     // when all questions are answered, game is over
-// }
+function renderAnswer (event) {
+    var selectedOption = event.target;
+    
+    // checks to see if the final question has been rendered
+    if (quizIndex === quiz.length-1) {
+        endQuiz();
+    } else if (selectedOption.textContent === quiz[quizIndex].answer) {
+        messageEl.setAttribute("class", "show");
+        messageEl.textContent = "Correct!";
+        quizIndex++;
+        renderQuestion();
+    } else {
+        messageEl.setAttribute("class", "show");
+        messageEl.textContent = "Incorrect!";
+        timeLeft -= 10;
+        quizIndex++;
+        renderQuestion();
+    }
+    console.log(quizIndex);
+}
 
 
 // score
-    // submit button saves initials and score (event listener)
-    submitButton.addEventListener("click", saveScore);
+submitButton.addEventListener("click", saveScore);
 
-    var initialInput = document.querySelector("#initials"); // holds value of initial textbox
-    var userScore = document.querySelector("#user-score"); // shares the same value as time when game ends
-    var scoreList = document.querySelector("#score-list"); // object that holds all initials and scores
-    var scores = [];
-    var userInitials;
-    // var userInfo = {
-    //     userInitials: initialInput.value.trim(),
-    //     userScore: timeLeft.value
-    // };
+var initialInput = document.querySelector("#initials"); // holds value of initial textbox
+var userScore = document.querySelector("#user-score"); // shares the same value as time when game ends
+var scoreList = document.querySelector(".score-list"); // object that holds all initials and scores
+var scores = [];
+
+// var userInfo = {
+//     userInitials: initialInput.value.trim(),
+//     userScore: timeLeft.value
+// };
 
 function saveScore(event) {
     event.preventDefault();
     // checks if input is empty
-    if (initialInput.value === "") {
+    var userInitials = initialInput.value.trim();
+
+    if (userInitials.value === "") {
         alert("Field cannot be left blank");
+        return;
     } else {
-        // enter user intials
-        var userInitials = initialInput.value.trim();
         // add score to score array
         scores.push(userInitials);
         // save initials and score to localStorage
         localStorage.setItem("userInitials", JSON.stringify(scores));
+        renderScores();
     }
 }
 
 
 // high score
-    // submit button shows all scores (event listener)
-    submitButton.addEventListener("click", renderScores);
+viewScores.addEventListener("click", renderScores);
 
-    function renderScores() {
-        // hide end-container
-        endContainer.setAttribute("class", "hide");
-        // show highScore-container
-        highScoreContainer.setAttribute("class", "show");
-
-        // // get stored scores from localStorage
-        // var scoreList = JSON.parse(localStorage.getItem("userInitials"));
-        // // if scores were retrieved from localStorage, update the score array
-        // if(scoreList !== null) {
-        //     scores = scoreList;
-        // } 
-        // // clears the scoreList element
-
-        // // render a new li for each score
-        // for (var i = 0; i < scores.length; i++) {
-        //     var score = scores[i];
-        
-        //     var li = document.createElement("li");
-        //     li.textContent = score;
-        //     li.setAttribute("data-index", i);
-        //     li.setAttribute("class", ".score-list");
-        
-        //     scores.appendChild(li);
-        //   }    
-    }
+function renderScores() {
     
-    // clear button clears all scores (event listener)
-    clearButton.addEventListener("click", clearScores);
+    // hide & show applicable containers
+    headerContainer.setAttribute("class", "hide");
+    startContainer.setAttribute("class", "hide");
+    quizContainer.setAttribute("class", "hide");
+    endContainer.setAttribute("class", "hide");
+    highScoreContainer.setAttribute("class", "show");
 
-    function clearScores() {
-        localStorage.clear();
-    }
+    // get stored scores from localStorage
+    var savedScores = JSON.parse(localStorage.getItem("userInitials"));
+  
+    // if scores were retrieved from localStorage, update the score array
+    if(savedScores !== null) {
+        scoreList.textContent = savedScores;
+    } 
 
-    // back button returns back to start (event listener)
-    backButton.addEventListener("click", backStart);
+    // // render a new li for each score
+    // for (var i = 0; i < scores.length; i++) {
+    //     var score = scores[i];
+    
+    //     var li = document.createElement("li");
+    //     li.textContent = score;
+    //     li.setAttribute("data-index", i);
+    //     li.setAttribute("class", ".score-list");
+    
+    //     scores = score.appendChild(li);
+    //   }    
+}
 
-    function backStart() {
-        // hide highScore-container
-        highScoreContainer.setAttribute("class", "hide");
-        // show header
-        headerContainer.setAttribute("class", "show");
-        // show start-container
-        startContainer.setAttribute("class", "show");
-        // reset variables
-        timeLeft = 6;
-        initialInput.value = "";
-    }
-                                                                                                            
+
+clearButton.addEventListener("click", clearScores);
+
+function clearScores() {
+    localStorage.clear();
+    scoreList.textContent = "";
+}
+
+
+backButton.addEventListener("click", backReset);
+
+function backReset() {
+
+    // hide & show applicable containers
+    headerContainer.setAttribute("class", "show");
+    startContainer.setAttribute("class", "show");
+    quizContainer.setAttribute("class", "hide");
+    endContainer.setAttribute("class", "hide");
+    highScoreContainer.setAttribute("class", "hide");
+    
+    // reset variables
+    timeLeft = 26;
+    quizIndex = 0;
+    initialInput.value = "";
+    countdownTimer.textContent = "0";
+}
