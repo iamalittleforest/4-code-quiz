@@ -15,7 +15,7 @@
         <!-- view high scores button -->
         <button id = "view-high-scores">View High Scores</button>
         <!-- timer -->
-        <div id = timer>Time: <span id = "countdown"></span> s</div>
+        <div id = timer>Time: <span id = "countdown">0</span> s</div>
     </header>
 
     <main>    
@@ -39,8 +39,6 @@
                     <li><button class = "option-4"></button></li>
                 </ol>    
             </div>
-            <!-- message displays after question is answered -->
-            <div id = "message" class = "hide"></div>
         </div>
 
         <!-- end container -->
@@ -56,6 +54,9 @@
                 <button id = "submit-button">Submit</button>
             </form>
         </div>
+
+        <!-- message container -->
+        <div id = "message-container" class = "hide"></div>
 
         <!-- high score container -->
         <div id = "high-score-container" class = "hide">

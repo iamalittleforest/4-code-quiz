@@ -34,8 +34,10 @@ function endQuiz() {
     endContainer.setAttribute("class", "show");
     highScoreContainer.setAttribute("class", "hide");
     
-    // show score
+    // show score and stop timer
     userScore.textContent = timeLeft;
+    countdownTimer.textContent = timeLeft;
+    clearInterval(timeInterval);
 }   
 
 // timer
@@ -52,7 +54,6 @@ function startTimer() {
         
         // when timer is zero, quiz ends
         if (timeLeft <= 0) {
-            clearInterval(timeInterval);
             endQuiz();
         }
     }, 1000);
@@ -98,7 +99,6 @@ function renderQuestion() {
 
     // quiz ends after the last question is rendered
     if (quizIndex === quiz.length) {
-        clearInterval(timeInterval);
         endQuiz();
     } else {
         questionEl.innerHTML = currentQuestion.question;
@@ -115,23 +115,37 @@ optionTwoEl.addEventListener("click", renderAnswer);
 optionThreeEl.addEventListener("click", renderAnswer);
 optionFourEl.addEventListener("click", renderAnswer);
 
-var messageEl = document.querySelector("#message"); 
+var messageEl = document.querySelector("#message-container"); 
 
 function renderAnswer (event) {
     var selectedOption = event.target;
     
     // performs actions based on whether the answer is correct or incorrect
     if (selectedOption.textContent === quiz[quizIndex].answer) {
-        messageEl.setAttribute("class", "show");
-        messageEl.textContent = "Correct!";
+        
+        // renders the next question
         quizIndex++;
         renderQuestion();
-    } else {
+
+        // correct message is shown
         messageEl.setAttribute("class", "show");
-        messageEl.textContent = "Incorrect!";
+        messageEl.textContent = "Correct!";
+        setTimeout(function () {
+            messageEl.textContent = "";    
+        }, 1000);
+    } else {
+        
+        // time decreases and renders tht next question
         timeLeft -= 10;
         quizIndex++;
         renderQuestion();
+
+        // incorrect message is shown
+        messageEl.setAttribute("class", "show");
+        messageEl.textContent = "Incorrect!";
+        setTimeout(function () {
+            messageEl.textContent = "";    
+        }, 1000);
     }
 }
 
@@ -158,6 +172,7 @@ function saveScore(event) {
         alert("Field cannot be left blank");
         return false;
     } else {
+        
         // add score to allScores array
         allScores.push(userInfo);
         // save userInfo to localStorage
