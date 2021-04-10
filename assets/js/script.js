@@ -1,21 +1,13 @@
 // define variables for each container
-var headerContainer = document.querySelector("header"); // disappears when high-score container is displayed
-var startContainer = document.querySelector("#start-container");  // disappears when start button is pressed
-var quizContainer = document.querySelector("#quiz-container"); // appears when start button is pressed
-var endContainer = document.querySelector("#end-container");  // appears when timer is zero or last question is answered
-var highScoreContainer = document.querySelector("#high-score-container"); // appears when submit button is pressed
-
-// define variables for each button
-var startButton = document.querySelector(".start-button"); // signals start of timer and quiz
-var submitButton = document.querySelector(".submit-button"); // saves initials into local storage
-var backButton = document.querySelector(".back-button"); // signals return to start
-var clearButton = document.querySelector(".clear-button"); // clears local storage
-var viewScores = document.querySelector(".view-high-scores"); // signals return to show high scores
-
-// init function
+var headerContainer = document.querySelector("header"); 
+var startContainer = document.querySelector("#start-container");
+var quizContainer = document.querySelector("#quiz-container");
+var endContainer = document.querySelector("#end-container"); 
+var highScoreContainer = document.querySelector("#high-score-container");
 
 
 // quiz
+var startButton = document.querySelector("#start-button");
 startButton.addEventListener("click", startQuiz)
 
 function startQuiz() {
@@ -44,27 +36,27 @@ function endQuiz() {
     
     // show score
     userScore.textContent = timeLeft;
-    console.log(userScore.textContent);
 }   
 
 // timer
-var countdownTimer = document.querySelector("#countdown"); // timer countdown
-var timeLeft = 26;
+var countdownTimer = document.querySelector("#countdown");
+var timeLeft = 76;
 var timeInterval;
+
 function startTimer() {
     timeInterval = setInterval(function () {
+
         // timer counts down and renders to page
         timeLeft--;
         countdownTimer.textContent = timeLeft;
         
         // when timer is zero, quiz ends
-        if (timeLeft === 0) {
+        if (timeLeft <= 0) {
             clearInterval(timeInterval);
             endQuiz();
         }
     }, 1000);
 }
-
 
 // questions
 var questionEl = document.querySelector("#questions");
@@ -104,6 +96,7 @@ var quiz = [
 function renderQuestion() {
     var currentQuestion = quiz[quizIndex];
 
+    // quiz ends after the last question is rendered
     if (quizIndex === quiz.length) {
         clearInterval(timeInterval);
         endQuiz();
@@ -116,18 +109,18 @@ function renderQuestion() {
     }
 }
 
-
 // answers
 optionOneEl.addEventListener("click", renderAnswer);
 optionTwoEl.addEventListener("click", renderAnswer);
 optionThreeEl.addEventListener("click", renderAnswer);
 optionFourEl.addEventListener("click", renderAnswer);
 
-var messageEl = document.querySelector("#message"); // either "correct" or "incorrect" based on answer to question
+var messageEl = document.querySelector("#message"); 
 
 function renderAnswer (event) {
     var selectedOption = event.target;
     
+    // performs actions based on whether the answer is correct or incorrect
     if (selectedOption.textContent === quiz[quizIndex].answer) {
         messageEl.setAttribute("class", "show");
         messageEl.textContent = "Correct!";
@@ -144,38 +137,41 @@ function renderAnswer (event) {
 
 
 // score
+var submitButton = document.querySelector("#submit-button");
 submitButton.addEventListener("click", saveScore);
 
-var initialInput = document.querySelector("#initials"); // holds value of initial textbox
-var userScore = document.querySelector("#user-score"); // shares the same value as time when game ends
-var scoreList = document.querySelector("#score-list"); // object that holds all initials and scores
-var scores = [];
-
-// var userInfo = {
-//     userInitials: initialInput.value.trim(),
-//     userScore: timeLeft.value
-// };
+var initialInput = document.querySelector("#initials"); 
+var userScore = document.querySelector("#user-score"); 
+var userInitials;
+var allScores = [];
 
 function saveScore(event) {
     event.preventDefault();
-    var userInitials = initialInput.value.trim();
+    
+    var userInfo = {
+        userScore: timeLeft,
+        userInitials: initialInput.value.trim()
+    };
 
-    // checks if input is empty
-    if (userInitials.value === "") {
+    // only adds userInfo if input field is not empty
+    if (userInitials === "") {
         alert("Field cannot be left blank");
-        return;
+        return false;
     } else {
-        // add score to score array
-        scores.push(userInitials);
-        // save initials and score to localStorage
-        localStorage.setItem("userInitials", JSON.stringify(scores));
+        // add score to allScores array
+        allScores.push(userInfo);
+        // save userInfo to localStorage
+        localStorage.setItem("userInfo", JSON.stringify(allScores));
         renderScores();
     }
 }
 
 
 // high score
+var viewScores = document.querySelector("#view-high-scores");
 viewScores.addEventListener("click", renderScores);
+
+var scoreList = document.querySelector("#score-list");
 
 function renderScores() {
     
@@ -186,30 +182,36 @@ function renderScores() {
     endContainer.setAttribute("class", "hide");
     highScoreContainer.setAttribute("class", "show");
 
-    // get stored scores from localStorage
-    var savedScores = JSON.parse(localStorage.getItem("userInitials"));
+    // get stored userInfo from localStorage
+    var savedScores = JSON.parse(localStorage.getItem("userInfo"));
   
-    // if scores were retrieved from localStorage, update the score array
+    // checks to see if data is stored in localStorage
     if (savedScores !== null) {
-        scores = savedScores;
+        allScores = savedScores;
+    } else {
+        allScores = [];
     }
 
-    // clear the scoreList element
-    scoreList.innerHTML = "";
+    // sort the allScores in decending order by userScore
+    allScores.sort(function (a,b) {
+        return b.userScore - a.userScore;
+    });
 
-    // render a new li for each score and append to the scoreList
-    for (var i = 0; i < scores.length; i++) {
-        var score = scores[i]; 
-    
+    // clear the scoreList element
+    scoreList.textContent = "";
+
+    // create a new li for each score and append to the scoreList
+    for (var i = 0; i < allScores.length; i++) {
         var li = document.createElement("li");
-        li.textContent = score;
+        li.textContent = `${allScores[i].userScore} - ${allScores[i].userInitials}`;
         li.setAttribute("data-index", i);
         li.setAttribute("class", "#score-list");
         scoreList.appendChild(li);
       }    
 }
 
-
+// clear button
+var clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", clearScores);
 
 function clearScores() {
@@ -217,7 +219,8 @@ function clearScores() {
     scoreList.textContent = "";
 }
 
-
+// back button
+var backButton = document.querySelector("#back-button");
 backButton.addEventListener("click", backReset);
 
 function backReset() {
@@ -231,8 +234,9 @@ function backReset() {
     messageEl.setAttribute("class", "hide");
     
     // reset variables
-    timeLeft = 26;
+    timeLeft = 76;
     quizIndex = 0;
     initialInput.value = "";
     countdownTimer.textContent = "0";
 }
+
