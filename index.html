@@ -12,7 +12,7 @@
   <body>
     <header class = "show">
         <button class = "view-high-scores">View High Scores</button>
-        <div class = timer>Time: <span id = "countdown">0</span> s</div>
+        <div id = timer>Time: <span id = "countdown">0</span> s</div>
     </header>
 
     <main>
@@ -23,7 +23,7 @@
         </div>
 
         <div id = "quiz-container" class = "hide">
-            <div class = "questions"></div>
+            <div id = "questions"></div>
             <div class = "options">
                 <ol>
                     <li><button class = "option-1"></button></li>
@@ -47,7 +47,7 @@
 
         <div id = "high-score-container" class = "hide">
             <h1>High Scores</h1>
-            <li class = "score-list"></li>
+            <ol id = "score-list"></ol>
             <button class = "back-button">Go Back</button>
             <button class = "clear-button">Clear High Scores</button>
 

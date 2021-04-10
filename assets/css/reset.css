@@ -30,7 +30,6 @@ img {
 }
 
 ol, 
-ul,
-li {
+ul {
     list-style: none;
 }

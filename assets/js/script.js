@@ -50,9 +50,9 @@ function endQuiz() {
 // timer
 var countdownTimer = document.querySelector("#countdown"); // timer countdown
 var timeLeft = 26;
-
+var timeInterval;
 function startTimer() {
-    var timeInterval = setInterval(function () {
+    timeInterval = setInterval(function () {
         // timer counts down and renders to page
         timeLeft--;
         countdownTimer.textContent = timeLeft;
@@ -67,7 +67,7 @@ function startTimer() {
 
 
 // questions
-var questionEl = document.querySelector(".questions");
+var questionEl = document.querySelector("#questions");
 var optionOneEl = document.querySelector(".option-1");
 var optionTwoEl = document.querySelector(".option-2");
 var optionThreeEl = document.querySelector(".option-3");
@@ -103,11 +103,17 @@ var quiz = [
 
 function renderQuestion() {
     var currentQuestion = quiz[quizIndex];
-    questionEl.innerHTML = currentQuestion.question;
-    optionOneEl.innerHTML = currentQuestion.options[0];
-    optionTwoEl.innerHTML = currentQuestion.options[1];
-    optionThreeEl.innerHTML = currentQuestion.options[2];
-    optionFourEl.innerHTML = currentQuestion.options[3];
+
+    if (quizIndex === quiz.length) {
+        clearInterval(timeInterval);
+        endQuiz();
+    } else {
+        questionEl.innerHTML = currentQuestion.question;
+        optionOneEl.innerHTML = currentQuestion.options[0];
+        optionTwoEl.innerHTML = currentQuestion.options[1];
+        optionThreeEl.innerHTML = currentQuestion.options[2];
+        optionFourEl.innerHTML = currentQuestion.options[3];  
+    }
 }
 
 
@@ -122,10 +128,7 @@ var messageEl = document.querySelector("#message"); // either "correct" or "inco
 function renderAnswer (event) {
     var selectedOption = event.target;
     
-    // checks to see if the final question has been rendered
-    if (quizIndex === quiz.length-1) {
-        endQuiz();
-    } else if (selectedOption.textContent === quiz[quizIndex].answer) {
+    if (selectedOption.textContent === quiz[quizIndex].answer) {
         messageEl.setAttribute("class", "show");
         messageEl.textContent = "Correct!";
         quizIndex++;
@@ -137,7 +140,6 @@ function renderAnswer (event) {
         quizIndex++;
         renderQuestion();
     }
-    console.log(quizIndex);
 }
 
 
@@ -146,7 +148,7 @@ submitButton.addEventListener("click", saveScore);
 
 var initialInput = document.querySelector("#initials"); // holds value of initial textbox
 var userScore = document.querySelector("#user-score"); // shares the same value as time when game ends
-var scoreList = document.querySelector(".score-list"); // object that holds all initials and scores
+var scoreList = document.querySelector("#score-list"); // object that holds all initials and scores
 var scores = [];
 
 // var userInfo = {
@@ -156,9 +158,9 @@ var scores = [];
 
 function saveScore(event) {
     event.preventDefault();
-    // checks if input is empty
     var userInitials = initialInput.value.trim();
 
+    // checks if input is empty
     if (userInitials.value === "") {
         alert("Field cannot be left blank");
         return;
@@ -188,21 +190,23 @@ function renderScores() {
     var savedScores = JSON.parse(localStorage.getItem("userInitials"));
   
     // if scores were retrieved from localStorage, update the score array
-    if(savedScores !== null) {
-        scoreList.textContent = savedScores;
-    } 
+    if (savedScores !== null) {
+        scores = savedScores;
+    }
 
-    // // render a new li for each score
-    // for (var i = 0; i < scores.length; i++) {
-    //     var score = scores[i];
+    // clear the scoreList element
+    scoreList.innerHTML = "";
+
+    // render a new li for each score and append to the scoreList
+    for (var i = 0; i < scores.length; i++) {
+        var score = scores[i]; 
     
-    //     var li = document.createElement("li");
-    //     li.textContent = score;
-    //     li.setAttribute("data-index", i);
-    //     li.setAttribute("class", ".score-list");
-    
-    //     scores = score.appendChild(li);
-    //   }    
+        var li = document.createElement("li");
+        li.textContent = score;
+        li.setAttribute("data-index", i);
+        li.setAttribute("class", "#score-list");
+        scoreList.appendChild(li);
+      }    
 }
 
 
@@ -224,6 +228,7 @@ function backReset() {
     quizContainer.setAttribute("class", "hide");
     endContainer.setAttribute("class", "hide");
     highScoreContainer.setAttribute("class", "hide");
+    messageEl.setAttribute("class", "hide");
     
     // reset variables
     timeLeft = 26;
