@@ -36,7 +36,7 @@ THEN I can save my initials and my score
 ```
 
 ## Screenshot
-<img src="assets/images/README-screenshot.png" alt="screenshot">
+<img src="assets/images/README-screenshot.PNG" alt="screenshot">
 
 ## Demo
 <img src="assets/images/README-demo.gif" alt="demo">
