@@ -231,7 +231,7 @@ clearButton.addEventListener("click", clearScores);
 
 function clearScores() {
     localStorage.clear();
-    scoreList.textContent = "";
+    scoreList.innerHTML = "";
 }
 
 // back button
