@@ -213,7 +213,7 @@ function renderScores() {
     });
 
     // clear the scoreList element
-    scoreList.textContent = "";
+    scoreList.innerHTML = "";
 
     // create a new li for each score and append to the scoreList
     for (var i = 0; i < allScores.length; i++) {
